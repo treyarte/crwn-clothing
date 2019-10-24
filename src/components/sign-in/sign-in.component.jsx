@@ -1,7 +1,8 @@
 import React, {Component} from "react"; 
+import {connect} from "react-redux";
 import FormInput from  "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
-import {signInWithGoogle, auth} from "../../firebase/firebase.utils";
+import {googleSignInStart, emailSignInStart} from "../../redux/user/user.actions";
 import "./sign-in.styles.scss";
 
 class SignIn extends Component{
@@ -15,14 +16,11 @@ class SignIn extends Component{
     }
     handleSubmit = async (e) =>{
         e.preventDefault();
+        const {emailSignInStart} = this.props;
         const {email, password} = this.state;
 
-        try{
-            await auth.signInWithEmailAndPassword(email, password);
-            this.setState({email: "", password: ""});
-        }catch(err){
-            console.log(err);
-        }
+        emailSignInStart(email, password);
+    
         
     }
 
@@ -31,6 +29,7 @@ class SignIn extends Component{
         this.setState({[name]: value})
     }
     render(){
+        const {googleSignInStart} = this.props;
         return(
             <div className="sign-in">
                 <h2 className="title">I already have an account</h2>
@@ -42,7 +41,7 @@ class SignIn extends Component{
 
                     <div className="buttons">
                         <CustomButton type="submit">SIGN IN</CustomButton>
-                        <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
+                        <CustomButton type="button" onClick={googleSignInStart} isGoogleSignIn>
                             Sign in with Google
                         </CustomButton>
                     </div>
@@ -54,5 +53,9 @@ class SignIn extends Component{
         );
     }
 }
+const mapDispatchToProps = dispatch => ({
+    googleSignInStart: () => dispatch(googleSignInStart()),
+    emailSignInStart: (email, password) => dispatch(emailSignInStart({email, password}))
+})
 
-export default SignIn;
+export default connect(null, mapDispatchToProps)(SignIn);
