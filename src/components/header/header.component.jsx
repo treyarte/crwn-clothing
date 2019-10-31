@@ -3,7 +3,6 @@ import React from "react";
 import {connect} from "react-redux";
 import {HeaderContainer, LogoContainer, OptionsContainer,OptionDiv, OptionLink} from "./header.styles.jsx";
 import {ReactComponent as Logo} from "../../assets/crown.svg";
-import {auth} from "../../firebase/firebase.utils";
 import CartIcon from "../cart-icon/cart-icon.component";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 import {createStructuredSelector} from "reselect";
